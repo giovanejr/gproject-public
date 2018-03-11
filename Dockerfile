@@ -28,7 +28,14 @@ ENV GOOGLE_APPLICATION_CREDENTIALS=/tmp/Gproject-7e905bd54814.json
 
 RUN sed -i 's:Listen 80:Listen 8080:g' /etc/apache2/ports.conf && sed -i 's/VirtualHost *:80/VirtualHost *:8080/g' /etc/apache2/sites-enabled/000-default.conf
 
-ADD fs /var/www/html
+ADD fs /var/www/html/
+RUN mkdir -p /var/www/html/files/.trash
+RUN chown -R www-data:www-data /var/www/html/
+
+RUN rm /var/www/html/index.html
+
+COPY apache2.conf /etc/apache2/
+
 
 CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
 
